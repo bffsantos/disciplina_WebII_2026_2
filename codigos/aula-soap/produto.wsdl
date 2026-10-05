@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions
+    name="ProdutoService"
+    targetNamespace="http://exemplo.com/produto"
+    xmlns:tns="http://exemplo.com/produto"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <message name="CalcularDescontoRequest">
+        <part name="preco" type="xsd:double"/>
+        <part name="percentual" type="xsd:double"/>
+    </message>
+
+    <message name="CalcularDescontoResponse">
+        <part name="precoFinal" type="xsd:string"/>
+    </message>
+
+    <portType name="ProdutoPort">
+        <operation name="CalcularDesconto">
+            <input message="tns:CalcularDescontoRequest"/>
+            <output message="tns:CalcularDescontoResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="ProdutoBinding" type="tns:ProdutoPort">
+        <soap:binding
+            style="rpc"
+            transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <operation name="CalcularDesconto">
+            <soap:operation soapAction="CalcularDesconto"/>
+
+            <input>
+                <soap:body use="encoded"
+                    namespace="http://exemplo.com/produto"
+                    encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+
+            <output>
+                <soap:body use="encoded"
+                    namespace="http://exemplo.com/produto"
+                    encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="ProdutoService">
+        <port name="ProdutoPort" binding="tns:ProdutoBinding">
+            <soap:address location="http://localhost:8001/produto"/>
+        </port>
+    </service>
+
+</definitions>
